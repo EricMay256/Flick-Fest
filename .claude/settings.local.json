@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"C:\\\\Users\\\\yarom\\\\Code\\\\Unity Projects\\\\Flick-Fest\\\\.claude\\\\worktrees\\\\hopeful-chaum-c5147b\" checkout -b claude/initial-implementation)",
+      "Bash(git -C \"C:\\\\Users\\\\yarom\\\\Code\\\\Unity Projects\\\\Flick-Fest\\\\.claude\\\\worktrees\\\\hopeful-chaum-c5147b\" log --all --oneline)"
+    ]
+  }
+}
