@@ -1,0 +1,22 @@
+{
+    "name": "FlickFest.Editor",
+    "rootNamespace": "FlickFest.Editor",
+    "references": [
+        "FlickFest.Core",
+        "FlickFest.Presentation",
+        "FlickFest.Network",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
