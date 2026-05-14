@@ -1,8 +1,8 @@
 namespace FlickFest.Core
 {
-    public enum TargetType
-    {
-        Positive,
-        Negative
-    }
+  public enum TargetType
+  {
+    Positive,
+    Negative
+  }
 }

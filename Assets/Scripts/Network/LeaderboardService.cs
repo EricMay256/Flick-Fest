@@ -34,7 +34,7 @@ namespace UBear.Leaderboard
     private const int TimeoutSeconds = 10;
 
     // PlayerPrefs keys — internal, not intended for callers to reference directly
-    private const string PrefAccessToken  = "leaderboard_access_token";
+    private const string PrefAccessToken = "leaderboard_access_token";
     private const string PrefRefreshToken = "leaderboard_refresh_token";
 
     #region  Token Access
@@ -55,12 +55,12 @@ namespace UBear.Leaderboard
       PlayerPrefs.Save();
     }
 
-    private string AccessToken  => PlayerPrefs.GetString(PrefAccessToken,  null);
+    private string AccessToken => PlayerPrefs.GetString(PrefAccessToken, null);
     private string RefreshToken => PlayerPrefs.GetString(PrefRefreshToken, null);
 
     private void StoreTokens(TokenResponse tokens)
     {
-      PlayerPrefs.SetString(PrefAccessToken,  tokens.AccessToken);
+      PlayerPrefs.SetString(PrefAccessToken, tokens.AccessToken);
       PlayerPrefs.SetString(PrefRefreshToken, tokens.RefreshToken);
       PlayerPrefs.Save();
     }
@@ -113,12 +113,12 @@ namespace UBear.Leaderboard
     /// Logs in with username and password. Stores the returned tokens.
     /// </summary>
     public IEnumerator Login(
-      string                            username,
-      string                            password,
-      Action<ApiResult<TokenResponse>>  callback)
+      string username,
+      string password,
+      Action<ApiResult<TokenResponse>> callback)
     {
-      string url  = $"{_config.BaseUrl}/api/auth/login";
-      var    body = new LoginRequest { Username = username, Password = password };
+      string url = $"{_config.BaseUrl}/api/auth/login";
+      var body = new LoginRequest { Username = username, Password = password };
       yield return Post<LoginRequest, TokenResponse>(url, body, result =>
       {
         if (result.Success) StoreTokens(result.Data);
@@ -130,13 +130,13 @@ namespace UBear.Leaderboard
     /// Registers a new claimed account. Stores the returned tokens.
     /// </summary>
     public IEnumerator Register(
-      string                           username,
-      string                           email,
-      string                           password,
+      string username,
+      string email,
+      string password,
       Action<ApiResult<TokenResponse>> callback)
     {
-      string url  = $"{_config.BaseUrl}/api/auth/register";
-      var    body = new RegisterRequest { Username = username, Email = email, Password = password };
+      string url = $"{_config.BaseUrl}/api/auth/register";
+      var body = new RegisterRequest { Username = username, Email = email, Password = password };
       yield return Post<RegisterRequest, TokenResponse>(url, body, result =>
       {
         if (result.Success) StoreTokens(result.Data);
@@ -158,8 +158,8 @@ namespace UBear.Leaderboard
         yield break;
       }
 
-      string url  = $"{_config.BaseUrl}/api/auth/refresh";
-      var    body = new RefreshRequest { RefreshToken = stored };
+      string url = $"{_config.BaseUrl}/api/auth/refresh";
+      var body = new RefreshRequest { RefreshToken = stored };
       yield return Post<RefreshRequest, TokenResponse>(url, body, result =>
       {
         if (result.Success) StoreTokens(result.Data);
@@ -180,9 +180,9 @@ namespace UBear.Leaderboard
         yield break;
       }
 
-      string url  = $"{_config.BaseUrl}/api/auth/logout";
+      string url = $"{_config.BaseUrl}/api/auth/logout";
       // Note: user token provided here in body instead of header like elsewhere.
-      var    body = new RefreshRequest { RefreshToken = stored };
+      var body = new RefreshRequest { RefreshToken = stored };
 
       // Logout returns 204 No Content — we parse success from the status code
       // rather than deserializing a response body. Regardless of the network
@@ -200,11 +200,11 @@ namespace UBear.Leaderboard
     /// Requires a stored access token.
     /// </summary>
     public IEnumerator Rename(
-      string                   newUsername,
-      Action<ApiResult<bool>>  callback)
+      string newUsername,
+      Action<ApiResult<bool>> callback)
     {
-      string url  = $"{_config.BaseUrl}/api/auth/rename";
-      var    body = new RenameRequest { Username = newUsername };
+      string url = $"{_config.BaseUrl}/api/auth/rename";
+      var body = new RenameRequest { Username = newUsername };
       yield return Post<RenameRequest, bool>(url, body, callback, requiresAuth: true);
     }
 
@@ -214,36 +214,36 @@ namespace UBear.Leaderboard
     /// Requires a stored access token from a guest session.
     /// </summary>
     public IEnumerator Claim(
-      string                           email,
-      string                           password,
+      string email,
+      string password,
       Action<ApiResult<TokenResponse>> callback)
     {
-      string url  = $"{_config.BaseUrl}/api/auth/claim";
-      var    body = new ClaimRequest { Email = email, Password = password };
+      string url = $"{_config.BaseUrl}/api/auth/claim";
+      var body = new ClaimRequest { Email = email, Password = password };
       yield return Post<ClaimRequest, TokenResponse>(url, body, result =>
       {
-          if (result.Success) StoreTokens(result.Data);
-          callback(result);
+        if (result.Success) StoreTokens(result.Data);
+        callback(result);
       }, requiresAuth: true);
     }
 
     #endregion
     #region  Leaderboard Endpoints
 
-/// <summary>
-/// Fetches the leaderboard for a given game mode and period.
-/// Period is one of: "alltime", "daily", "weekly".
-/// limit is clamped client-side to 1..100; offset is clamped to >= 0.
-/// The server enforces these ranges and returns HTTP 422 for out-of-range values.
-/// </summary>
+    /// <summary>
+    /// Fetches the leaderboard for a given game mode and period.
+    /// Period is one of: "alltime", "daily", "weekly".
+    /// limit is clamped client-side to 1..100; offset is clamped to >= 0.
+    /// The server enforces these ranges and returns HTTP 422 for out-of-range values.
+    /// </summary>
     public IEnumerator GetScores(
-        string                                   gameMode,
-        Action<ApiResult<LeaderboardResponse>>   callback,
-        TimePeriod                               period = TimePeriod.Alltime,
-        int                                      limit  = 100,
-        int                                      offset = 0)
+        string gameMode,
+        Action<ApiResult<LeaderboardResponse>> callback,
+        TimePeriod period = TimePeriod.Alltime,
+        int limit = 100,
+        int offset = 0)
     {
-      limit  = Mathf.Clamp(limit, 1, 100);
+      limit = Mathf.Clamp(limit, 1, 100);
       offset = Mathf.Max(offset, 0);
       string url = $"{_config.BaseUrl}/api/leaderboard/scores"
                 + $"?game_mode={UnityWebRequest.EscapeURL(gameMode)}"
@@ -260,18 +260,18 @@ namespace UBear.Leaderboard
     /// The server enforces these ranges and returns HTTP 422 for out-of-range values.
     /// </summary>
     public IEnumerator GetLatestScores(
-      Action<ApiResult<LeaderboardResponse>>   callback,
-      int                                      limit     = 100,
-      int                                      offset    = 0,
-      string[]                                 gameModes = null)
+      Action<ApiResult<LeaderboardResponse>> callback,
+      int limit = 100,
+      int offset = 0,
+      string[] gameModes = null)
     {
-      limit  = Mathf.Clamp(limit, 1, 100);
+      limit = Mathf.Clamp(limit, 1, 100);
       offset = Mathf.Max(offset, 0);
       var sb = new StringBuilder($"{_config.BaseUrl}/api/leaderboard/latest?limit={limit}&offset={offset}");
       if (gameModes != null)
       {
-          foreach (string mode in gameModes)
-              sb.Append($"&game_modes={UnityWebRequest.EscapeURL(mode)}");
+        foreach (string mode in gameModes)
+          sb.Append($"&game_modes={UnityWebRequest.EscapeURL(mode)}");
       }
       yield return Get(sb.ToString(), callback);
     }
@@ -293,12 +293,12 @@ namespace UBear.Leaderboard
     /// Requires a stored access token.
     /// </summary>
     public IEnumerator SubmitScore(
-      long                             score,
-      string                           gameMode,
+      long score,
+      string gameMode,
       Action<ApiResult<ScoreResponse>> callback)
     {
-      string url  = $"{_config.BaseUrl}/api/leaderboard/scores";
-      var    body = new ScoreSubmission { Score = score, GameMode = gameMode };
+      string url = $"{_config.BaseUrl}/api/leaderboard/scores";
+      var body = new ScoreSubmission { Score = score, GameMode = gameMode };
       yield return Post<ScoreSubmission, ScoreResponse>(url, body, callback, requiresAuth: true);
     }
 
@@ -325,16 +325,16 @@ namespace UBear.Leaderboard
     /// endpoints like /guest that expect POST with no body.
     /// </summary>
     private IEnumerator Post<TBody, TResponse>(
-      string                       url,
-      TBody                        body,
+      string url,
+      TBody body,
       Action<ApiResult<TResponse>> callback,
-      bool                         requiresAuth = false)
+      bool requiresAuth = false)
     {
-      string json    = body != null ? JsonConvert.SerializeObject(body) : "{}";
+      string json = body != null ? JsonConvert.SerializeObject(body) : "{}";
       byte[] encoded = Encoding.UTF8.GetBytes(json);
 
       using UnityWebRequest request = new UnityWebRequest(url, "POST");
-      request.uploadHandler   = new UploadHandlerRaw(encoded);
+      request.uploadHandler = new UploadHandlerRaw(encoded);
       request.downloadHandler = new DownloadHandlerBuffer();
       request.SetRequestHeader("Content-Type", "application/json");
       request.timeout = TimeoutSeconds;
@@ -366,10 +366,10 @@ namespace UBear.Leaderboard
       // Network-level failure: no HTTP response at all (DNS, timeout, connection refused)
       if (request.result == UnityWebRequest.Result.ConnectionError)
       {
-          return ApiResult<T>.Fail(
-              $"Network error: {request.error}",
-              ApiErrorKind.Network,
-              statusCode: null);
+        return ApiResult<T>.Fail(
+            $"Network error: {request.error}",
+            ApiErrorKind.Network,
+            statusCode: null);
       }
 
       long status = request.responseCode;
@@ -377,12 +377,12 @@ namespace UBear.Leaderboard
       // HTTP error (4xx/5xx) — UnityWebRequest reports these as ProtocolError
       if (request.result == UnityWebRequest.Result.ProtocolError)
       {
-          string detail = TryExtractDetail(request.downloadHandler?.text);
-          string message = string.IsNullOrEmpty(detail)
-              ? $"Request failed ({status}): {request.error}"
-              : $"Request failed ({status}): {detail}";
+        string detail = TryExtractDetail(request.downloadHandler?.text);
+        string message = string.IsNullOrEmpty(detail)
+            ? $"Request failed ({status}): {request.error}"
+            : $"Request failed ({status}): {detail}";
 
-          return ApiResult<T>.Fail(message, ClassifyStatus(status), (int)status);
+        return ApiResult<T>.Fail(message, ClassifyStatus(status), (int)status);
       }
 
       // Other non-success result (DataProcessingError, etc.)
@@ -460,6 +460,6 @@ namespace UBear.Leaderboard
       }
       catch { return null; }
     }
-  #endregion
+    #endregion
   }
 }

@@ -1,8 +1,8 @@
 namespace FlickFest.Core
 {
-    public enum EndCondition
-    {
-        TimeLimit,
-        TargetCount
-    }
+  public enum EndCondition
+  {
+    TimeLimit,
+    TargetCount
+  }
 }
