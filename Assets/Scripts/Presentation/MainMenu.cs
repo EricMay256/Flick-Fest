@@ -20,6 +20,7 @@ namespace FlickFest.Presentation
     [SerializeField] private ModeButton _modeButtonPrefab;
     [SerializeField] private TextMeshProUGUI _titleLabel;
     [SerializeField] private TextMeshProUGUI _statusLabel;
+    [SerializeField] private TextMeshProUGUI _selectedModeLabel;
     [SerializeField] private GameObject _playButton;
 
     [Tooltip("Root GameObject for the menu panel. Defaults to this GameObject.")]
