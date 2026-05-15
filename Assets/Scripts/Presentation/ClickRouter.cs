@@ -38,8 +38,8 @@ namespace FlickFest.Presentation
         return;
       }
 
-      Mouse mouse = Mouse.current;
-      if (mouse == null || !mouse.leftButton.wasPressedThisFrame)
+      Pointer pointer = Pointer.current;
+      if (pointer == null || !pointer.press.wasPressedThisFrame)
       {
         return;
       }
@@ -53,11 +53,11 @@ namespace FlickFest.Presentation
         }
       }
 
-      Vector2 screen = mouse.position.ReadValue();
+      Vector2 screen = pointer.position.ReadValue();
       Vector3 world = _camera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -_camera.transform.position.z));
 
       // OverlapPointAll because the play-area collider also sits under the
-      // cursor — we need to prefer a TargetView hit over the background.
+      // cursor/finger — we need to prefer a TargetView hit over the background.
       Collider2D[] hits = Physics2D.OverlapPointAll(world, _targetMask);
       foreach (Collider2D hit in hits)
       {
