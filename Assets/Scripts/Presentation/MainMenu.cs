@@ -125,6 +125,7 @@ namespace FlickFest.Presentation
     private void SelectMode(GameModeDefinition mode)
     {
       _selectedMode = mode;
+      SetText(_selectedModeLabel, $"{mode.DisplayLabel}");
       UpdatePlayButtonInteractable();
     }
 
