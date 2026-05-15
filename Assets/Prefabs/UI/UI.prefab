@@ -201,6 +201,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 750e772529212944891cfeb13c667570, type: 3}
+--- !u!114 &99842059537036318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7322908979515658419, guid: 750e772529212944891cfeb13c667570, type: 3}
+  m_PrefabInstance: {fileID: 7260514231963198637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf2cb333f7701e46a77af65481c867d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FlickFest.Presentation::FlickFest.Presentation.MainMenu
 --- !u!224 &4945998887654490361 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2333199895290848340, guid: 750e772529212944891cfeb13c667570, type: 3}
@@ -302,6 +313,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8350739244113481975, guid: e34c40d7f43519f40a24071904666b5e, type: 3}
+      propertyPath: _mainMenu
+      value: 
+      objectReference: {fileID: 99842059537036318}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

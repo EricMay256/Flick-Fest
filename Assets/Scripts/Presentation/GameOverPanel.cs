@@ -27,14 +27,6 @@ namespace FlickFest.Presentation
     [SerializeField] private TextMeshProUGUI _scoreContextLabel;
     [SerializeField] private TextMeshProUGUI _statusLabel;
 
-    [Header("Legacy Rank / Percentile / Best (optional)")]
-    [Tooltip("Standalone rank label. Leave unwired if you use the combined sub-row label instead.")]
-    [SerializeField] private TextMeshProUGUI _rankLabel;
-    [Tooltip("Standalone percentile label. Leave unwired if you use the combined sub-row label instead.")]
-    [SerializeField] private TextMeshProUGUI _percentileLabel;
-    [Tooltip("Standalone personal-best label. Leave unwired if you use the combined best-score value label instead.")]
-    [SerializeField] private TextMeshProUGUI _personalBestLabel;
-
     [Header("Best Score Block")]
     [Tooltip("Caption like \"Best Score:\". Shown at reduced opacity by design (set in scene).")]
     [SerializeField] private TextMeshProUGUI _bestScoreCaptionLabel;
@@ -50,7 +42,6 @@ namespace FlickFest.Presentation
 
     [Header("Buttons")]
     [SerializeField] private GameObject _playAgainButton;
-    [FormerlySerializedAs("_leaderboardButton")]
     [SerializeField] private GameObject _mainMenuButton;
     [SerializeField] private Button _changeNameButton;
 
@@ -135,9 +126,6 @@ namespace FlickFest.Presentation
       SetPanelActive(true);
       ClearLeaderboardRows();
       SetText(_leaderboardError, string.Empty);
-      SetText(_rankLabel, string.Empty);
-      SetText(_percentileLabel, string.Empty);
-      SetText(_personalBestLabel, string.Empty);
       SetText(_bestScoreCaptionLabel, string.Empty);
       SetText(_bestScoreValueLabel, string.Empty);
       SetText(_bestScoreSubRowLabel, string.Empty);
@@ -205,11 +193,6 @@ namespace FlickFest.Presentation
       string bestFormatted = FormatScoreForMode(stored.Score, _mode);
       string bestLine = isNewBest ? "New personal best!" : bestFormatted;
 
-      // Legacy standalone labels — only populated if wired.
-      SetText(_rankLabel, rankText);
-      SetText(_percentileLabel, percentileText);
-      SetText(_personalBestLabel, isNewBest ? "New personal best!" : $"Best: {bestFormatted}");
-
       // New combined "Best Score" presentation.
       if (_bestScoreValueLabel != null)
       {
@@ -270,7 +253,7 @@ namespace FlickFest.Presentation
         return _mainMenu;
       }
       // Cache the lookup so the inactive search only happens once per session.
-      _mainMenu = FindObjectOfType<MainMenu>(true);
+      _mainMenu = FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include);
       return _mainMenu;
     }
 
