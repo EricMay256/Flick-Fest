@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 3538658445948816649}
   - component: {fileID: 6315406668490384414}
   m_Layer: 0
-  m_Name: ViewLeaderboard
+  m_Name: MainMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -756,7 +756,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8350739244113481975}
         m_TargetAssemblyTypeName: FlickFest.Presentation.GameOverPanel, FlickFest.Presentation
-        m_MethodName: OnLeaderboardButtonPressed
+        m_MethodName: OnMainMenuButtonPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1274,7 +1274,8 @@ MonoBehaviour:
   _rowPrefab: {fileID: 262204832468087035, guid: 62e3963a92e381d4d811f4e92c0b4c52, type: 3}
   _leaderboardError: {fileID: 1998003406307329737}
   _playAgainButton: {fileID: 9143267298776026249}
-  _leaderboardButton: {fileID: 4041568296313195699}
+  _mainMenuButton: {fileID: 4041568296313195699}
+  _mainMenu: {fileID: 0}
   _changeNameButton: {fileID: 2465246314251092624}
   _changeNameDialog: {fileID: 2145121534889939848}
   _panelRoot: {fileID: 620323221750487579}
@@ -1754,7 +1755,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Show Leaderboard
+  m_text: Main Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

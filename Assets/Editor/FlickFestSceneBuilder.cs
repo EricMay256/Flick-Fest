@@ -398,8 +398,8 @@ namespace FlickFest.Editor
       scaler.matchWidthOrHeight = 0.5f;
 
       BuildHud(canvasGo.transform, session);
-      BuildMainMenu(canvasGo.transform, session, service, modes, modeButtonPrefab);
-      BuildGameOverPanel(canvasGo.transform, session, leaderboardRowPrefab);
+      MainMenu menu = BuildMainMenu(canvasGo.transform, session, service, modes, modeButtonPrefab);
+      BuildGameOverPanel(canvasGo.transform, session, leaderboardRowPrefab, menu);
 
       return canvasGo;
     }
@@ -440,7 +440,7 @@ namespace FlickFest.Editor
       modeLabel.SetActive(false);
     }
 
-    private static void BuildMainMenu(
+    private static MainMenu BuildMainMenu(
         Transform parent,
         GameSession session,
         LeaderboardService service,
@@ -486,12 +486,14 @@ namespace FlickFest.Editor
       SetSerializedReference(menu, "_statusLabel", status.GetComponent<TextMeshProUGUI>());
       SetSerializedReference(menu, "_playButton", playButton);
       SetSerializedReference(menu, "_panelRoot", panelGo);
+      return menu;
     }
 
     private static void BuildGameOverPanel(
         Transform parent,
         GameSession session,
-        GameObject leaderboardRowPrefab)
+        GameObject leaderboardRowPrefab,
+        MainMenu mainMenu)
     {
       var hostGo = new GameObject("GameOverHost", typeof(RectTransform));
       hostGo.transform.SetParent(parent, worldPositionStays: false);
@@ -538,9 +540,9 @@ namespace FlickFest.Editor
       SetRect(playAgain, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(-160, 120), new Vector2(260, 80));
       UnityEventTools.AddPersistentListener(playAgain.GetComponent<Button>().onClick, panel.OnPlayAgainPressed);
 
-      GameObject viewLb = CreatePrimaryButton(panelGo.transform, "ViewLeaderboard", "Leaderboard");
-      SetRect(viewLb, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(160, 120), new Vector2(260, 80));
-      UnityEventTools.AddPersistentListener(viewLb.GetComponent<Button>().onClick, panel.OnLeaderboardButtonPressed);
+      GameObject mainMenuBtn = CreatePrimaryButton(panelGo.transform, "MainMenuButton", "Main Menu");
+      SetRect(mainMenuBtn, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(160, 120), new Vector2(260, 80));
+      UnityEventTools.AddPersistentListener(mainMenuBtn.GetComponent<Button>().onClick, panel.OnMainMenuButtonPressed);
 
       SetSerializedReference(panel, "_session", session);
       SetSerializedReference(panel, "_finalScoreLabel", final.GetComponent<TextMeshProUGUI>());
@@ -553,7 +555,8 @@ namespace FlickFest.Editor
       SetSerializedReference(panel, "_rowPrefab", leaderboardRowPrefab.GetComponent<LeaderboardRow>());
       SetSerializedReference(panel, "_leaderboardError", lbError.GetComponent<TextMeshProUGUI>());
       SetSerializedReference(panel, "_playAgainButton", playAgain);
-      SetSerializedReference(panel, "_leaderboardButton", viewLb);
+      SetSerializedReference(panel, "_mainMenuButton", mainMenuBtn);
+      SetSerializedReference(panel, "_mainMenu", mainMenu);
       SetSerializedReference(panel, "_panelRoot", panelGo);
 
       panelGo.SetActive(false);

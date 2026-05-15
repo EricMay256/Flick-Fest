@@ -2,13 +2,16 @@ using FlickFest.Core;
 using TMPro;
 using UBear.Leaderboard;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace FlickFest.Presentation
 {
   /// <summary>
-  /// Shown on game over. Three phases: immediate local score, server response
-  /// with rank/percentile, optional full-leaderboard fetch on demand.
+  /// Shown on game over. The leaderboard is fetched automatically once the
+  /// server confirms the submitted score, so the panel reaches its final
+  /// presentation without an extra click. The former "Show Leaderboard"
+  /// button is repurposed as a "Main Menu" return action.
   ///
   /// The layout exposes both the legacy standalone labels (_rankLabel,
   /// _percentileLabel, _personalBestLabel) and a new combined "Best Score"
@@ -47,8 +50,14 @@ namespace FlickFest.Presentation
 
     [Header("Buttons")]
     [SerializeField] private GameObject _playAgainButton;
-    [SerializeField] private GameObject _leaderboardButton;
+    [FormerlySerializedAs("_leaderboardButton")]
+    [SerializeField] private GameObject _mainMenuButton;
     [SerializeField] private Button _changeNameButton;
+
+    [Header("Navigation")]
+    [Tooltip("Main menu to re-show when the Main Menu button is pressed. " +
+             "Left null falls back to FindObjectOfType at runtime.")]
+    [SerializeField] private MainMenu _mainMenu;
 
     [Header("Change Name")]
     [SerializeField] private ChangeNameDialog _changeNameDialog;
@@ -137,7 +146,9 @@ namespace FlickFest.Presentation
 
       SetText(_statusLabel, "Submitting...");
       SetActive(_playAgainButton, false);
-      SetActive(_leaderboardButton, false);
+      // Main menu button works offline too — show it immediately so the user
+      // always has an escape hatch from the game over screen.
+      SetActive(_mainMenuButton, true);
       SetActive(_changeNameButton != null ? _changeNameButton.gameObject : null, false);
 
       _session.SubmitScore(finalScore, gameMode, OnScoreSubmitted);
@@ -164,7 +175,6 @@ namespace FlickFest.Presentation
         SetText(_statusLabel, "Offline — score not submitted");
         Debug.LogWarning($"[GameOverPanel] Score submission failed: {result.Error}");
         SetActive(_playAgainButton, true);
-        SetActive(_leaderboardButton, true);
         // Without a confirmed identity from the server, hide the rename button.
         SetActive(_changeNameButton != null ? _changeNameButton.gameObject : null, false);
         return;
@@ -176,10 +186,12 @@ namespace FlickFest.Presentation
 
       RenderRankPercentileBlock(stored, isNewBest);
 
-      SetText(_statusLabel, string.Empty);
+      SetText(_statusLabel, "Loading leaderboard...");
       SetActive(_playAgainButton, true);
-      SetActive(_leaderboardButton, true);
       SetActive(_changeNameButton != null ? _changeNameButton.gameObject : null, _changeNameDialog != null);
+
+      // Auto-fetch the full leaderboard — no extra button press required.
+      _session.FetchLeaderboard(_submittedGameMode, OnLeaderboardReceived);
     }
 
     private void RenderRankPercentileBlock(ScoreResponse stored, bool isNewBest)
@@ -225,13 +237,20 @@ namespace FlickFest.Presentation
       return string.Join(Separator, parts);
     }
 
-    public void OnLeaderboardButtonPressed()
+    public void OnMainMenuButtonPressed()
     {
-      SetActive(_leaderboardButton, false);
-      SetText(_statusLabel, "Loading leaderboard...");
-      SetText(_leaderboardError, string.Empty);
       ClearLeaderboardRows();
-      _session.FetchLeaderboard(_submittedGameMode, OnLeaderboardReceived);
+      SetPanelActive(false);
+
+      MainMenu menu = ResolveMainMenu();
+      if (menu != null)
+      {
+        menu.Show();
+      }
+      else
+      {
+        Debug.LogWarning("[GameOverPanel] Main menu reference not set and none found in scene.");
+      }
     }
 
     public void OnPlayAgainPressed()
@@ -242,6 +261,17 @@ namespace FlickFest.Presentation
       {
         _session.StartGame(_session.ActiveMode);
       }
+    }
+
+    private MainMenu ResolveMainMenu()
+    {
+      if (_mainMenu != null)
+      {
+        return _mainMenu;
+      }
+      // Cache the lookup so the inactive search only happens once per session.
+      _mainMenu = FindObjectOfType<MainMenu>(true);
+      return _mainMenu;
     }
 
     private void OnChangeNamePressed()
@@ -291,7 +321,6 @@ namespace FlickFest.Presentation
       if (!result.Success || result.Data == null)
       {
         SetText(_leaderboardError, result.Error ?? "Failed to load leaderboard.");
-        SetActive(_leaderboardButton, true);
         return;
       }
 
