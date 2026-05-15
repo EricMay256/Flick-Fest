@@ -126,6 +126,19 @@ namespace UBear.Leaderboard
     }
 
     /// <summary>
+    /// Updates the cached username without rotating tokens. Use after a successful
+    /// /rename call where the server has accepted the new name but hasn't issued
+    /// fresh JWTs — the stored access token's username claim is now stale, but
+    /// the cache should reflect what the user sees.
+    /// </summary>
+    public static void UpdateCachedUsername(string username)
+    {
+      if (string.IsNullOrEmpty(username)) return;
+      PlayerPrefs.SetString(PrefUsername, username);
+      PlayerPrefs.Save();
+    }
+
+    /// <summary>
     /// Decodes the payload segment of a JWT without verifying the signature.
     /// Intentionally trust-free: the result is used only to choose a recovery
     /// strategy on the client. The server re-verifies every token on every

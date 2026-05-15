@@ -22,6 +22,7 @@ namespace FlickFest.Presentation
     [SerializeField] private TextMeshProUGUI _titleLabel;
     [SerializeField] private TextMeshProUGUI _statusLabel;
     [SerializeField] private TextMeshProUGUI _selectedModeLabel;
+    [SerializeField] private TextMeshProUGUI _playerNameLabel;
     [SerializeField] private GameObject _playButton;
 
     [Header("Change Name")]
@@ -47,6 +48,10 @@ namespace FlickFest.Presentation
         // Hidden until guest/login auth resolves — rename needs a token.
         _changeNameButton.gameObject.SetActive(false);
       }
+      if (_changeNameDialog != null)
+      {
+        _changeNameDialog.OnRenamed += HandleRenamed;
+      }
     }
 
     private void OnDestroy()
@@ -54,6 +59,10 @@ namespace FlickFest.Presentation
       if (_changeNameButton != null)
       {
         _changeNameButton.onClick.RemoveListener(OnChangeNamePressed);
+      }
+      if (_changeNameDialog != null)
+      {
+        _changeNameDialog.OnRenamed -= HandleRenamed;
       }
     }
 
@@ -63,6 +72,12 @@ namespace FlickFest.Presentation
       SetText(_statusLabel, "Connecting...");
       SetActive(_playButton, false);
       BuildModeButtons();
+
+      // Optimistic display: show the cached name from a prior session
+      // (if any) so returning launches don't flash empty -> name. First
+      // launch has no cache and the post-auth path below fills it in.
+      RefreshPlayerNameLabel();
+      
 
       _authResolved = false;
       if (_leaderboardService != null)
@@ -105,11 +120,18 @@ namespace FlickFest.Presentation
       if (result.Success)
       {
         SetText(_statusLabel, string.Empty);
+        // Authoritative update: cache may have been empty (first launch)
+        // or stale (renamed from another device). Post-auth is when we
+        // know the real value.
+        RefreshPlayerNameLabel();
       }
       else
       {
         SetText(_statusLabel, "Offline mode — scores won't be saved");
         Debug.LogWarning($"[MainMenu] Auth failed: {result.Error}");
+        // Don't clear the label on failure — a stale cached name is
+        // better UX than blank. First-launch + offline leaves it empty,
+        // which is the honest answer.
       }
 
       // Rename is only meaningful when we have a valid session.
@@ -128,6 +150,26 @@ namespace FlickFest.Presentation
         return;
       }
       _changeNameDialog.Open();
+    }
+
+
+    private void HandleRenamed(string newName)
+    {
+      // Dialog hands us the accepted name directly. Push it into the
+      // service's cache so any other UI that reads Username sees the
+      // new value immediately, rather than waiting for the next token
+      // refresh to update the JWT payload.
+      LeaderboardService.UpdateCachedUsername(newName);
+      RefreshPlayerNameLabel();
+    }
+
+    private void RefreshPlayerNameLabel()
+    {
+      if (_playerNameLabel == null || _leaderboardService == null) return;
+
+      string name = LeaderboardService.Username;
+      SetText(_playerNameLabel,
+              string.IsNullOrEmpty(name) ? string.Empty : $"Playing as {name}");
     }
 
     private void BuildModeButtons()

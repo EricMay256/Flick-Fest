@@ -33,16 +33,13 @@ namespace UBear.Leaderboard
 
     private const int TimeoutSeconds = 10;
 
-    // PlayerPrefs keys — internal, not intended for callers to reference directly
-    private const string PrefAccessToken = "leaderboard_access_token";
-    private const string PrefRefreshToken = "leaderboard_refresh_token";
-    private const string PrefUsername = "leaderboard_username";
-
     // Public re-exports — keeps the existing call sites (UI scripts, etc.)
     // working without forcing them to know about TokenStore.
     public static string Username        => TokenStore.Username;
     public static bool   IsAuthenticated => TokenStore.IsAuthenticated;
     public static void   ClearTokens()   => TokenStore.Clear();
+    public static void UpdateCachedUsername(string username) =>
+      TokenStore.UpdateCachedUsername(username);
 
     #region  Auth Endpoints
     /// <summary>
