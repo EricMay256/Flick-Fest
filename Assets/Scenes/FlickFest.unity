@@ -604,9 +604,17 @@ PrefabInstance:
       propertyPath: _leaderboardService
       value: 
       objectReference: {fileID: 144229790}
+    - target: {fileID: 1498465895014616969, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2057711187979828879, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490000629184189356, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_GlobalPointSize
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 3059217182026596597, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
       propertyPath: m_Pivot.x
@@ -688,10 +696,74 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3360689134611320882, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366236932324579653, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5175823174741970849, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -6.399994
+      objectReference: {fileID: 0}
+    - target: {fileID: 6593386296565874970, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_fontSize
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6593386296565874970, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010443985025249273, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: _leaderboardService
+      value: 
+      objectReference: {fileID: 144229790}
     - target: {fileID: 8298508914541269722, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
       propertyPath: _session
       value: 
       objectReference: {fileID: 1823055351}
+    - target: {fileID: 8413343865545288375, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_fontSize
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413343865545288375, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8823682353141573226, guid: bec36b99660883a4f8eaca5a975eed24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
