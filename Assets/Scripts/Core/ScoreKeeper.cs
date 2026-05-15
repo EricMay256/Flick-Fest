@@ -70,20 +70,46 @@ namespace FlickFest.Core
       }
     }
 
+    /// <summary>Hits per multiplier tier. 1-5 = 1x, 6-10 = 2x, etc.</summary>
+    public const int HitsPerTier = 5;
+
+    /// <summary>Highest multiplier tier the combo can reach.</summary>
+    public const int MaxMultiplier = 5;
+
     // Spec: "Hits 1–5 = 1x, 6–10 = 2x, 11–15 = 3x, etc. Capped at 5x."
     // Ceiling division of comboCount/5 produces the documented brackets;
     // the literal "(ComboCount / 5)" in the spec uses integer division, which
     // gives 1x at combo 6. The example values are the source of truth — see
     // README "Decisions made" for the rationale.
-    private static int ComboMultiplier(int comboCount)
+    public static int ComboMultiplier(int comboCount)
     {
       if (comboCount <= 0)
       {
         return 1;
       }
 
-      int ceil = (comboCount + 4) / 5;
-      return Math.Min(ceil, 5);
+      int ceil = (comboCount + HitsPerTier - 1) / HitsPerTier;
+      return Math.Min(ceil, MaxMultiplier);
+    }
+
+    /// <summary>
+    /// How many hits the player has accumulated within the current multiplier tier.
+    /// Returns 0 when no combo is active, and clamps at <see cref="HitsPerTier"/>
+    /// once the cap is reached so the progress bar can stay pinned full.
+    /// </summary>
+    public static int HitsInCurrentTier(int comboCount)
+    {
+      if (comboCount <= 0)
+      {
+        return 0;
+      }
+      int multiplier = ComboMultiplier(comboCount);
+      if (multiplier >= MaxMultiplier)
+      {
+        return HitsPerTier;
+      }
+      int withinTier = ((comboCount - 1) % HitsPerTier) + 1;
+      return withinTier;
     }
   }
 }

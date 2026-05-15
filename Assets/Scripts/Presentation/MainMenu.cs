@@ -3,6 +3,7 @@ using FlickFest.Core;
 using TMPro;
 using UBear.Leaderboard;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FlickFest.Presentation
 {
@@ -23,6 +24,10 @@ namespace FlickFest.Presentation
     [SerializeField] private TextMeshProUGUI _selectedModeLabel;
     [SerializeField] private GameObject _playButton;
 
+    [Header("Change Name")]
+    [SerializeField] private Button _changeNameButton;
+    [SerializeField] private ChangeNameDialog _changeNameDialog;
+
     [Tooltip("Root GameObject for the menu panel. Defaults to this GameObject.")]
     [SerializeField] private GameObject _panelRoot;
 
@@ -35,6 +40,20 @@ namespace FlickFest.Presentation
       if (_panelRoot == null)
       {
         _panelRoot = gameObject;
+      }
+      if (_changeNameButton != null)
+      {
+        _changeNameButton.onClick.AddListener(OnChangeNamePressed);
+        // Hidden until guest/login auth resolves — rename needs a token.
+        _changeNameButton.gameObject.SetActive(false);
+      }
+    }
+
+    private void OnDestroy()
+    {
+      if (_changeNameButton != null)
+      {
+        _changeNameButton.onClick.RemoveListener(OnChangeNamePressed);
       }
     }
 
@@ -93,7 +112,22 @@ namespace FlickFest.Presentation
         Debug.LogWarning($"[MainMenu] Auth failed: {result.Error}");
       }
 
+      // Rename is only meaningful when we have a valid session.
+      if (_changeNameButton != null)
+      {
+        _changeNameButton.gameObject.SetActive(result.Success && _changeNameDialog != null);
+      }
+
       UpdatePlayButtonInteractable();
+    }
+
+    private void OnChangeNamePressed()
+    {
+      if (_changeNameDialog == null)
+      {
+        return;
+      }
+      _changeNameDialog.Open();
     }
 
     private void BuildModeButtons()
