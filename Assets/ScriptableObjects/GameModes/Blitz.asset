@@ -20,7 +20,7 @@ MonoBehaviour:
   _maxActiveTargets: 1
   _spawnInterval: 0.5
   _targetLifetime: 2
-  _targetRadius: 0.05
+  _targetRadius: 0.07
   _hitPoints: 0
   _missPenalty: 0
   _negativePenalty: 0
